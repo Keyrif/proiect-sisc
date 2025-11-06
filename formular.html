@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image" href="./resources/Logo_Funtomite.png">
+    <link 
+      rel="stylesheet" 
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formular</title>
+</head>
+<body class="body_pages">
+    
+   <div class="container-pages-formular">
+
+        <a href="index.html" class="logo">
+        <img src="./resources/Logo_Funtomite.png" alt="Logo Funtomite">
+        </a>
+
+    <h1>CyberFall 2026</h1>
+    <h1>Formular</h1>
+ <form id="formular">
+      <label for="nume">Nume:</label><br>
+      <input id="nume" name="nume" type="text" placeholder="Popescu" required><br><br>
+
+      <label for="prenume">Prenume:</label><br>
+      <input id="prenume" name="prenume" type="text" placeholder="Ionel" required><br><br>
+
+      <label for="facultate">Facultate:</label><br>
+      <input id="facultate" name="facultate" type="text" placeholder="CSIE" required><br><br>
+
+      <label for="universitate">Universitate:</label><br>
+      <input id="universitate" name="universitate" type="text" placeholder="ASE" required><br><br>
+
+      <label for="telefon">Număr de telefon:</label><br>
+      <input id="telefon" name="telefon" type="tel" placeholder="07xxxxxxxx" required><br><br>
+
+      <label for="email">Email:</label><br>
+      <input id="email" name="email" type="email" placeholder="ionel@gmail.com" required><br><br>
+
+      <label>Sursa:</label><br>
+      <input type="radio" name="sursa" value="Prieteni" id="sursa_prieteni">
+      <label for="sursa_prieteni">Prieteni</label><br>
+
+      <input type="radio" name="sursa" value="Altceva" id="sursa_altceva">
+      <label for="sursa_altceva">Altceva</label><br><br>
+
+      <label>Raspuns:</label><br>
+      <input type="radio" name="raspuns" value="Da" id="raspuns_da">
+      <label for="raspuns_da">Da</label><br>
+
+      <input type="radio" name="raspuns" value="Nu" id="raspuns_nu">
+      <label for="raspuns_nu">Nu</label><br><br>
+
+      <input type="submit" value="SUBMIT">
+    </form>
+
+    <div id="mesaj" style="margin-top: 20px; font-weight: bold;"></div>
+  </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("formular");
+      const mesaj = document.getElementById("mesaj");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        data.sursa = data.sursa || '';
+        data.raspuns = data.raspuns || '';
+        
+        try {
+          const response = await fetch("/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+          
+          await response.text(); 
+          
+          if (response.ok) {
+            mesaj.style.color = "green";
+            mesaj.textContent = "Formular trimis cu succes!";
+            form.reset();
+          } else {
+            mesaj.style.color = "red";
+            mesaj.textContent = "A aparut o eroare la trimitere";
+          }
+        } catch (err) {
+          mesaj.style.color = "red";
+          mesaj.textContent = "Eroare conexiune cu serverul";
+        }
+      });
+    });
+</script>
+
+    </div>
+
+ <footer class="site-footer">
+      <p>&copy; 2026 CyberFall. Toate drepturile rezervate.</p>
+       <a href="https://www.facebook.com/profile.php?id=61583423040373" target="_blank">
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+       </a>
+       <a href="https://www.instagram.com/funtomitele?igsh=MWlsYnpmNGhjOW5ibQ%3D%3D&utm_source=qr" target="_blank">
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+       </a>
+  </footer>
+
+</body>
+</html>
